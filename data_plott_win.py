@@ -27,7 +27,7 @@ fig, axs = plt.subplots(2, 2)
 axs[0, 0].set_title('Temperature Data')
 axs[0, 0].set_xlabel('Time')
 axs[0, 0].set_ylabel('Temperature (°C)')
-axs[0, 0].set_ylim(20, 30)
+axs[0, 0].set_ylim(20, 40)
 
 
 axs[0, 1].set_title('Pressure Data')
@@ -39,7 +39,7 @@ axs[0, 1].set_ylim(100, 110)
 axs[1, 0].set_title('Axis [1, 0]')
 axs[1, 0].set_xlabel('Time')
 axs[1, 0].set_ylabel('Humidity (%)')
-axs[1, 0].set_ylim(00, 50)
+axs[1, 0].set_ylim(20, 70)
 fig.tight_layout()
 
 axs[1,1].imshow(img)
