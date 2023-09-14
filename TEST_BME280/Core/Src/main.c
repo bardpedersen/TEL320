@@ -74,23 +74,30 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	//uint8_t SensorId = 0;
 	uint16_t dig_T1 = 0;
-	uint16_t dig_T2 = 0;
-	uint16_t dig_T3 = 0;
+	int16_t dig_T2 = 0;
+	int16_t dig_T3 = 0;
 	uint16_t dig_P1 = 0;
-	uint16_t dig_P2 = 0;
-	uint16_t dig_P3 = 0;
-	uint16_t dig_P4 = 0;
-	uint16_t dig_P5 = 0;
-	uint16_t dig_P6 = 0;
-	uint16_t dig_P7 = 0;
-	uint16_t dig_P8 = 0;
-	uint16_t dig_P9 = 0;
+	int16_t dig_P2 = 0;
+	int16_t dig_P3 = 0;
+	int16_t dig_P4 = 0;
+	int16_t dig_P5 = 0;
+	int16_t dig_P6 = 0;
+	int16_t dig_P7 = 0;
+	int16_t dig_P8 = 0;
+	int16_t dig_P9 = 0;
+	uint8_t dig_H1;
+	int16_t dig_H2;
+	uint8_t dig_H3;
+	int16_t dig_H4;
+	int16_t dig_H5;
+	uint8_t dig_H6;
 	uint8_t trimdata[32];
 	uint8_t datatowrite = 0;
 	uint8_t RawData[8];
 	int32_t tRaw;
 	int32_t	pRaw;
-	char SendID[20];
+	int32_t hRaw;
+	char SendData[80];
 	int32_t t_fine;
 
   /* USER CODE END 1 */
@@ -118,6 +125,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
+  // Functions from BME280 manual
   int32_t BME280_compensate_T_int32(int32_t adc_T)
   {
 	  int32_t var1, var2, T;
@@ -149,9 +157,37 @@ int main(void)
   	return (uint32_t)p;
   }
 
+  uint32_t bme280_compensate_H_int32(int32_t adc_H)
+  {
+     int32_t v_x1_u32r;
+	  v_x1_u32r = (t_fine - ((int32_t)76800));
+	  v_x1_u32r = (((((adc_H << 14) - (((int32_t)dig_H4) << 20) - (((int32_t)dig_H5) * v_x1_u32r)) +
+	  ((int32_t)16384)) >> 15) * (((((((v_x1_u32r * ((int32_t)dig_H6)) >> 10) * (((v_x1_u32r *
+	  ((int32_t)dig_H3)) >> 11) + ((int32_t)32768))) >> 10) + ((int32_t)2097152)) *
+	  ((int32_t)dig_H2) + 8192) >> 14));
+	  v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) * ((int32_t)dig_H1)) >> 4)); v_x1_u32r = (v_x1_u32r < 0 ? 0 : v_x1_u32r);
+	  v_x1_u32r = (v_x1_u32r > 419430400 ? 419430400 : v_x1_u32r);
+	  return (uint32_t)(v_x1_u32r>>12);
+  }
+
+
+  //reset device
+  datatowrite = 0xB6;
+  HAL_I2C_Mem_Write(&hi2c1, 0x77<<1, 0xE0, 1, &datatowrite, 1, 1000);
+
+  HAL_Delay(100);
+
+  //write to humidity
+  datatowrite = 0x01;
+  HAL_I2C_Mem_Write(&hi2c1, 0x77<<1, 0xF2, 1, &datatowrite, 1, 1000);
+
+  HAL_Delay(100);
+
+  //write to temp and pres
   datatowrite = (0x03 <<5) |(0x05 << 2) | 0x03;
   HAL_I2C_Mem_Write(&hi2c1, 0x77<<1, 0xF4, 1, &datatowrite, 1, 1000);
 
+  HAL_Delay(100);
 
   /* USER CODE END 2 */
 
@@ -160,11 +196,10 @@ int main(void)
   while (1)
   {
 	/* USER CODE END WHILE */
+
 	HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0x88, 1, trimdata, 25, 1000);
-	//HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0xD0, 1, &SensorId, 1, 1000);
-	//HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0xFA, 1, &dig_T1, 1, 1000);
-	//HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0xFB, 1, &dig_T2, 1, 1000);
-	//HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0xFC, 1, &dig_T3, 1, 1000);
+	HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0xE1, 1, (uint8_t *)trimdata+25, 7, 1000);
+
 	dig_T1 = (trimdata[1]<<8) | trimdata[0];
 	dig_T2 = (trimdata[3]<<8) | trimdata[2];
 	dig_T3 = (trimdata[5]<<8) | trimdata[4];
@@ -177,16 +212,26 @@ int main(void)
 	dig_P7 = (trimdata[19]<<8) | trimdata[18];
 	dig_P8 = (trimdata[21]<<8) | trimdata[20];
 	dig_P9 = (trimdata[23]<<8) | trimdata[22];
+	dig_H1 = trimdata[24];
+	dig_H2 = (trimdata[26]<<8) | trimdata[25];
+	dig_H3 = (trimdata[27]);
+	dig_H4 = (trimdata[28]<<4) | (trimdata[29] & 0x0f);
+	dig_H5 = (trimdata[30]<<4) | (trimdata[29]>>4);
+	dig_H6 = (trimdata[31]);
 
 	HAL_I2C_Mem_Read(&hi2c1, 0x77<<1, 0xF7, 1, RawData, 8, 1000);
 
 	pRaw = (RawData[0]<<12)|(RawData[1]<<4)|(RawData[2]>>4);
 	tRaw = (RawData[3]<<12)|(RawData[4]<<4)|(RawData[5]>>4);
-	int temp = (BME280_compensate_T_int32(tRaw))/100.0;
-	int Pressure = (BME280_compensate_P_int64 (pRaw))/(256.0*100);
+	hRaw = (RawData[6]<<8)|(RawData[7]);
 
-	int len = sprintf(SendID, "%lu\n", Pressure);
-	HAL_UART_Transmit(&huart2, (uint8_t*)SendID, len, 10);// Sending in normal mode
+	int temp = BME280_compensate_T_int32(tRaw);
+	int pressure = BME280_compensate_P_int64 (pRaw);
+	int humid = bme280_compensate_H_int32 (hRaw);
+
+	int len = sprintf(SendData, "%d,%d,%d", temp, pressure, humid);
+
+	HAL_UART_Transmit(&huart2, (uint8_t*)SendData, len, 10);// Sending in normal mode
 	HAL_Delay(1000);
 	/* USER CODE BEGIN 3 */
 

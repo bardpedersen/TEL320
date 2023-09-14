@@ -60,8 +60,8 @@ all: main-build
 main-build: TEST_BME280.elf secondary-outputs
 
 # Tool invocations
-TEST_BME280.elf TEST_BME280.map: $(OBJS) $(USER_OBJS) /Users/Bard/STM32CubeIDE/workspace_1.13.1/TEST_BME280/STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "TEST_BME280.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/Bard/STM32CubeIDE/workspace_1.13.1/TEST_BME280/STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TEST_BME280.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TEST_BME280.elf TEST_BME280.map: $(OBJS) $(USER_OBJS) /Users/Bard/Documents/Skole/NMBU/2023_Høst/TEL320/TEST_BME280/STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TEST_BME280.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/Bard/Documents/Skole/NMBU/2023_Høst/TEL320/TEST_BME280/STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TEST_BME280.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
