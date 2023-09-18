@@ -1,0 +1,10 @@
+../Core/Src/main.c:111:10:BME280_compensate_T_int32	32	static
+../Core/Src/main.c:71:5:main	248	static
+../Core/Src/main.c:124:11:BME280_compensate_P_int64	336	static
+../Core/Src/main.c:145:11:bme280_compensate_H_int32	24	static
+../Core/Src/main.c:165:7:calibData	72	static
+../Core/Src/main.c:279:6:SystemClock_Config	96	static
+../Core/Src/main.c:329:13:MX_SPI1_Init	8	static
+../Core/Src/main.c:369:13:MX_USART2_UART_Init	8	static
+../Core/Src/main.c:404:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:444:6:Error_Handler	4	static,ignoring_inline_asm

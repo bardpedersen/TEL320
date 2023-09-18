@@ -1,0 +1,10 @@
+../Core/Src/main.c:109:10:BME280_compensate_T_int32	1
+../Core/Src/main.c:71:5:main	1
+../Core/Src/main.c:122:11:BME280_compensate_P_int64	2
+../Core/Src/main.c:143:11:bme280_compensate_H_int32	1
+../Core/Src/main.c:164:7:calibData	1
+../Core/Src/main.c:245:6:SystemClock_Config	4
+../Core/Src/main.c:295:13:MX_I2C1_Init	4
+../Core/Src/main.c:343:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:378:13:MX_GPIO_Init	1
+../Core/Src/main.c:418:6:Error_Handler	1
