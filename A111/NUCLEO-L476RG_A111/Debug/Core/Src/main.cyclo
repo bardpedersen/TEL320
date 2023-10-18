@@ -1,7 +1,10 @@
-../Core/Src/main.c:62:5:_write	1
-../Core/Src/main.c:75:5:main	1
-../Core/Src/main.c:121:6:SystemClock_Config	4
-../Core/Src/main.c:171:13:MX_SPI3_Init	2
-../Core/Src/main.c:211:13:MX_USART2_UART_Init	2
-../Core/Src/main.c:246:13:MX_GPIO_Init	1
-../Core/Src/main.c:306:6:Error_Handler	1
+../Core/Src/main.c:75:5:_write	1
+../Core/Src/main.c:93:7:update_configuration	1
+../Core/Src/main.c:88:5:main	1
+../Core/Src/main.c:104:7:print_data	2
+../Core/Src/main.c:117:6:acc_example_service_envelope	9
+../Core/Src/main.c:249:6:SystemClock_Config	4
+../Core/Src/main.c:299:13:MX_SPI3_Init	2
+../Core/Src/main.c:339:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:374:13:MX_GPIO_Init	1
+../Core/Src/main.c:434:6:Error_Handler	1

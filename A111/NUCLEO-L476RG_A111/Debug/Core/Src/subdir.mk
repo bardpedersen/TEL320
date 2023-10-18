@@ -8,8 +8,8 @@ C_SRCS += \
 ../Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.c \
 ../Core/Src/acc_integration_log.c \
 ../Core/Src/acc_integration_stm32.c \
-../Core/Src/example_service_envelope.c \
 ../Core/Src/main.c \
+../Core/Src/peak_detection.c \
 ../Core/Src/stm32l4xx_hal_msp.c \
 ../Core/Src/stm32l4xx_it.c \
 ../Core/Src/syscalls.c \
@@ -20,8 +20,8 @@ OBJS += \
 ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.o \
 ./Core/Src/acc_integration_log.o \
 ./Core/Src/acc_integration_stm32.o \
-./Core/Src/example_service_envelope.o \
 ./Core/Src/main.o \
+./Core/Src/peak_detection.o \
 ./Core/Src/stm32l4xx_hal_msp.o \
 ./Core/Src/stm32l4xx_it.o \
 ./Core/Src/syscalls.o \
@@ -32,8 +32,8 @@ C_DEPS += \
 ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.d \
 ./Core/Src/acc_integration_log.d \
 ./Core/Src/acc_integration_stm32.d \
-./Core/Src/example_service_envelope.d \
 ./Core/Src/main.d \
+./Core/Src/peak_detection.d \
 ./Core/Src/stm32l4xx_hal_msp.d \
 ./Core/Src/stm32l4xx_it.d \
 ./Core/Src/syscalls.d \
@@ -48,7 +48,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.cyclo ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.d ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.o ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.su ./Core/Src/acc_integration_log.cyclo ./Core/Src/acc_integration_log.d ./Core/Src/acc_integration_log.o ./Core/Src/acc_integration_log.su ./Core/Src/acc_integration_stm32.cyclo ./Core/Src/acc_integration_stm32.d ./Core/Src/acc_integration_stm32.o ./Core/Src/acc_integration_stm32.su ./Core/Src/example_service_envelope.cyclo ./Core/Src/example_service_envelope.d ./Core/Src/example_service_envelope.o ./Core/Src/example_service_envelope.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32l4xx_hal_msp.cyclo ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.cyclo ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l4xx.cyclo ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su
+	-$(RM) ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.cyclo ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.d ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.o ./Core/Src/acc_hal_integration_stm32cube_sparkfun_a111.su ./Core/Src/acc_integration_log.cyclo ./Core/Src/acc_integration_log.d ./Core/Src/acc_integration_log.o ./Core/Src/acc_integration_log.su ./Core/Src/acc_integration_stm32.cyclo ./Core/Src/acc_integration_stm32.d ./Core/Src/acc_integration_stm32.o ./Core/Src/acc_integration_stm32.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/peak_detection.cyclo ./Core/Src/peak_detection.d ./Core/Src/peak_detection.o ./Core/Src/peak_detection.su ./Core/Src/stm32l4xx_hal_msp.cyclo ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.cyclo ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l4xx.cyclo ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su
 
 .PHONY: clean-Core-2f-Src
 

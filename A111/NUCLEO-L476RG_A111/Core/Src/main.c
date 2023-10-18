@@ -22,6 +22,19 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "example_service_envelope.h"
+#include "peak_detection.h"
+
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "acc_hal_definitions.h"
+#include "acc_hal_integration.h"
+#include "acc_rss.h"
+#include "acc_service.h"
+#include "acc_service_envelope.h"
+#include "acc_version.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -76,6 +89,121 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+
+	void update_configuration(acc_service_configuration_t envelope_configuration)
+	{
+		float start_m  = 0.2f;
+		float length_m = 0.5f;
+
+		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_2);
+		acc_service_requested_start_set(envelope_configuration, start_m);
+		acc_service_requested_length_set(envelope_configuration, length_m);
+	}
+
+
+	void print_data(uint16_t *data, uint16_t data_length)
+	{
+		//printf("Envelope data:\n");
+		for (uint16_t i = 0; i < data_length; i++)
+		{
+			printf("%6u", (unsigned int)(data[i]));
+		}
+
+		printf("\n");
+	}
+
+
+
+	int acc_example_service_envelope(int argc, char *argv[])
+	{
+		(void)argc;
+		(void)argv;
+		//printf("Acconeer software version %s\n", acc_version_get());
+
+		const acc_hal_t *hal = acc_hal_integration_get_implementation();
+
+		if (!acc_rss_activate(hal))
+		{
+			printf("acc_rss_activate() failed\n");
+			return EXIT_FAILURE;
+		}
+
+		acc_service_configuration_t envelope_configuration = acc_service_envelope_configuration_create();
+
+		if (envelope_configuration == NULL)
+		{
+			printf("acc_service_envelope_configuration_create() failed\n");
+			acc_rss_deactivate();
+			return EXIT_FAILURE;
+		}
+
+		update_configuration(envelope_configuration);
+
+		acc_service_handle_t handle = acc_service_create(envelope_configuration);
+
+		if (handle == NULL)
+		{
+			printf("acc_service_create() failed\n");
+			acc_service_envelope_configuration_destroy(&envelope_configuration);
+			acc_rss_deactivate();
+			return EXIT_FAILURE;
+		}
+
+		acc_service_envelope_configuration_destroy(&envelope_configuration);
+
+		acc_service_envelope_metadata_t envelope_metadata = { 0 };
+		acc_service_envelope_get_metadata(handle, &envelope_metadata);
+
+		//printf("Start: %d mm\n", (int)(envelope_metadata.start_m * 1000.0f));
+		//printf("Length: %u mm\n", (unsigned int)(envelope_metadata.length_m * 1000.0f));
+		//printf("Data length: %u\n", (unsigned int)(envelope_metadata.data_length));
+
+		if (!acc_service_activate(handle))
+		{
+			printf("acc_service_activate() failed\n");
+			acc_service_destroy(&handle);
+			acc_rss_deactivate();
+			return EXIT_FAILURE;
+		}
+
+		bool                               success    = true;
+		const int                          iterations = 5;
+		uint16_t                           data[envelope_metadata.data_length];
+		acc_service_envelope_result_info_t result_info;
+
+		for (int i = 0; i < iterations; i++)
+		{
+			success = acc_service_envelope_get_next(handle, data, envelope_metadata.data_length, &result_info);
+
+			if (!success)
+			{
+				//printf("acc_service_envelope_get_next() failed\n");
+				break;
+			}
+
+			int* peaks = mutliple_peak_detection(data, envelope_metadata.data_length);
+			print_data(data, envelope_metadata.data_length);
+			printf("Peaks ");
+			printf("%6u ", (unsigned int)(peaks[0]));
+			printf("%6u ", (unsigned int)(peaks[1]));
+			printf("\n");
+		}
+
+		bool deactivated = acc_service_deactivate(handle);
+
+		acc_service_destroy(&handle);
+
+		acc_rss_deactivate();
+
+		if (deactivated && success)
+		{
+			//printf("Application finished OK\n");
+			return EXIT_SUCCESS;
+		}
+
+		return EXIT_FAILURE;
+	}
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,7 +235,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_Delay(10);
+	  HAL_Delay(5000);
 	  acc_example_service_envelope(0, NULL);
     /* USER CODE BEGIN 3 */
   }
