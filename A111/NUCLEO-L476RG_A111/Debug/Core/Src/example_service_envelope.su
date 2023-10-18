@@ -1,0 +1,3 @@
+../Core/Src/example_service_envelope.c:44:5:acc_example_service_envelope	96	dynamic
+../Core/Src/example_service_envelope.c:130:6:update_configuration	24	static
+../Core/Src/example_service_envelope.c:140:6:print_data	24	static
