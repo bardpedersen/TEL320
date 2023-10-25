@@ -94,7 +94,7 @@ int main(void)
 	void update_configuration(acc_service_configuration_t envelope_configuration, float start_m, float length_m)
 	{
 
-		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_4);
+		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_1);
 		acc_service_requested_start_set(envelope_configuration, start_m);
 		acc_service_requested_length_set(envelope_configuration, length_m);
 	}
@@ -184,26 +184,44 @@ int main(void)
 
 			int* peaks = mutliple_peak_detection(data, envelope_metadata.data_length);
 			print_data(data, envelope_metadata.data_length);
-			printf("Peaks ");
-			printf("%6u ", (unsigned int)(peaks[0]));
-			printf("%6u ", (unsigned int)(peaks[1]));
+
+		    printf("Peaks ");
+		    printf("%6u", (unsigned int)(peaks[0]));
+			printf("%6u", (unsigned int)(peaks[1]));
 			printf("\n");
+			double oldMin = 0;
+			double oldMax = envelope_metadata.data_length;
+			double newMin = start_m *100;
+			double newMax = (start_m + length_m)*100;
+			double radius = 6.5; // cm
+			double peak1 = (((peaks[0] - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin);
+			double peak2 = (((peaks[1] - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin);
+
+		    if (peak1 < peak2){
+		    	double temp = peak1;
+		    	peak1 = peak2;
+		    	peak2 = temp;
+		    }
+		    uint16_t num_peaks = 2;
+		    if (peak1 == newMin || peak2 == newMin){
+		    	num_peaks = 1;
+
+		    }
 
 
-		    double oldMin = 0;
-		    double oldMax = envelope_metadata.data_length;
-		    double newMin = start_m;
-		    double newMax = start_m + length_m;
-		    double radius = 10; // m
-		    double value = radius - (peaks[1] - peaks[0]);
-		    double higth = (((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin);
 
+		    double value = 2*radius - (peak1 - peak2);
+
+
+
+		    printf("Height");
+		    printf("%.2f",value);
 		    double K = 1.49; // Constant
 		    double S = 0.001; // Slope of the pipe, assumption.
 		    double n = 0.20; // Roughness coefficient, assumption.
-		    double Q = water_flow(higth, radius, K, S, n, 1);
-			printf("Peaks ");
-		    printf("%6u", Q);
+		    uint16_t Q = water_flow(value, radius, K, S, n, num_peaks);
+			printf("Speed ");
+		    printf("%6u\n", Q);
 
 		}
 

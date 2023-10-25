@@ -6,11 +6,14 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 #include "estimated_water_speed.h"
 
-double water_flow(double higth, double radius, double K, double S, double n, int number_peaks) {
-    double theta, R, A, Q;
+uint16_t water_flow(double higth, double radius, double K, double S, double n, uint16_t number_peaks) {
+	double theta, R, A, Q;
 
     if (higth == 2 * radius || number_peaks == 1) { // Full pipe
         R = radius / 2; // Hydraulic radius
