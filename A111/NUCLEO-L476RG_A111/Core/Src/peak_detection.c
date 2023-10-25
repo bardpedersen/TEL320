@@ -30,7 +30,7 @@ int* mutliple_peak_detection(uint16_t *data, uint16_t data_length){
 	};
 
 	for (int i = 0;i<data_length-5;i++){
-		if (data[i] > data[i-1] && data[i] > data[i+5]){
+		if (data[i] > data[i-1] && data[i] > data[i+5]&& data[i] > 1000){
 			if (data[i] > peaks[0].value){
 				if (i - peaks[0].index > 10){
 					peaks[1].index = peaks[0].index;

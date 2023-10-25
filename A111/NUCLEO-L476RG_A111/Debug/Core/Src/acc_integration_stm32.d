@@ -27,7 +27,7 @@ Core/Src/acc_integration_stm32.o: ../Core/Src/acc_integration_stm32.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- /Users/Bard/STM32CubeIDE/workspace_1.13.1/NUCLEO-L476RG_A111/cortex_m4/integration/acc_integration.h
+ C:/Users/pbuka/TEL320/TEL320/A111/NUCLEO-L476RG_A111/cortex_m4/integration/acc_integration.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -57,4 +57,4 @@ Core/Src/acc_integration_stm32.o: ../Core/Src/acc_integration_stm32.c \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
-/Users/Bard/STM32CubeIDE/workspace_1.13.1/NUCLEO-L476RG_A111/cortex_m4/integration/acc_integration.h:
+C:/Users/pbuka/TEL320/TEL320/A111/NUCLEO-L476RG_A111/cortex_m4/integration/acc_integration.h:

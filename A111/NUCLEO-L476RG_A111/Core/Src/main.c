@@ -95,7 +95,7 @@ int main(void)
 		float start_m  = 0.2f;
 		float length_m = 0.5f;
 
-		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_2);
+		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_1);
 		acc_service_requested_start_set(envelope_configuration, start_m);
 		acc_service_requested_length_set(envelope_configuration, length_m);
 	}
