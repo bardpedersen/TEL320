@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "example_service_envelope.h"
 #include "peak_detection.h"
+#include "estimated_water_speed.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -90,12 +91,10 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 
-	void update_configuration(acc_service_configuration_t envelope_configuration)
+	void update_configuration(acc_service_configuration_t envelope_configuration, float start_m, float length_m)
 	{
-		float start_m  = 0.2f;
-		float length_m = 0.5f;
 
-		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_1);
+		acc_service_profile_set(envelope_configuration, ACC_SERVICE_PROFILE_4);
 		acc_service_requested_start_set(envelope_configuration, start_m);
 		acc_service_requested_length_set(envelope_configuration, length_m);
 	}
@@ -116,6 +115,8 @@ int main(void)
 
 	int acc_example_service_envelope(int argc, char *argv[])
 	{
+		float start_m  = 0.2f;
+		float length_m = 0.5f;
 		(void)argc;
 		(void)argv;
 		//printf("Acconeer software version %s\n", acc_version_get());
@@ -137,7 +138,7 @@ int main(void)
 			return EXIT_FAILURE;
 		}
 
-		update_configuration(envelope_configuration);
+		update_configuration(envelope_configuration, start_m, length_m);
 
 		acc_service_handle_t handle = acc_service_create(envelope_configuration);
 
@@ -187,6 +188,23 @@ int main(void)
 			printf("%6u ", (unsigned int)(peaks[0]));
 			printf("%6u ", (unsigned int)(peaks[1]));
 			printf("\n");
+
+
+		    double oldMin = 0;
+		    double oldMax = envelope_metadata.data_length;
+		    double newMin = start_m;
+		    double newMax = start_m + length_m;
+		    double radius = 10; // m
+		    double value = radius - (peaks[1] - peaks[0]);
+		    double higth = (((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin);
+
+		    double K = 1.49; // Constant
+		    double S = 0.001; // Slope of the pipe, assumption.
+		    double n = 0.20; // Roughness coefficient, assumption.
+		    double Q = water_flow(higth, radius, K, S, n, 1);
+			printf("Peaks ");
+		    printf("%6u", Q);
+
 		}
 
 		bool deactivated = acc_service_deactivate(handle);

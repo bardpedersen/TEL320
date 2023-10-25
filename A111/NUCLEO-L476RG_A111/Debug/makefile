@@ -60,8 +60,8 @@ all: main-build
 main-build: NUCLEO-L476RG_A111.elf secondary-outputs
 
 # Tool invocations
-NUCLEO-L476RG_A111.elf NUCLEO-L476RG_A111.map: $(OBJS) $(USER_OBJS) C:\Users\pbuka\TEL320\TEL320\A111\NUCLEO-L476RG_A111\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "NUCLEO-L476RG_A111.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\pbuka\TEL320\TEL320\A111\NUCLEO-L476RG_A111\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-L476RG_A111.map" -Wl,--gc-sections -static -L"C:\Users\pbuka\TEL320\TEL320\A111\NUCLEO-L476RG_A111\cortex_m4\rss\lib" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+NUCLEO-L476RG_A111.elf NUCLEO-L476RG_A111.map: $(OBJS) $(USER_OBJS) /Users/Bard/STM32CubeIDE/workspace_1.13.1/NUCLEO-L476RG_A111/STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "NUCLEO-L476RG_A111.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/Bard/STM32CubeIDE/workspace_1.13.1/NUCLEO-L476RG_A111/STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-L476RG_A111.map" -Wl,--gc-sections -static -L"/Users/Bard/STM32CubeIDE/workspace_1.13.1/NUCLEO-L476RG_A111/cortex_m4/rss/lib" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
