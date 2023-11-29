@@ -185,10 +185,7 @@ int main(void)
 			int* peaks = mutliple_peak_detection(data, envelope_metadata.data_length);
 			print_data(data, envelope_metadata.data_length);
 
-		    printf("Peaks ");
-		    printf("%6u", (unsigned int)(peaks[0]));
-			printf("%6u", (unsigned int)(peaks[1]));
-			printf("\n");
+
 			double oldMin = 0;
 			double oldMax = envelope_metadata.data_length;
 			double newMin = start_m *100;
@@ -196,7 +193,10 @@ int main(void)
 			double radius = 6.5; // cm
 			double peak1 = (((peaks[0] - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin);
 			double peak2 = (((peaks[1] - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin);
-
+			printf("Peaks ");
+			printf("%6f\n",peak1);
+			printf("%6f",peak2);
+			printf("\n");
 		    if (peak1 < peak2){
 		    	double temp = peak1;
 		    	peak1 = peak2;
@@ -210,13 +210,14 @@ int main(void)
 
 
 
+
 		    double value = 2*radius - (peak1 - peak2);
 
 
 
 		    printf("Height");
-		    printf("%.2f",value);
-		    double K = 1.49; // Constant
+		    printf("%.2f\n",value);
+		    double K = 1; // Constant when using non retard units
 		    double S = 0.001; // Slope of the pipe, assumption.
 		    double n = 0.20; // Roughness coefficient, assumption.
 		    uint16_t Q = water_flow(value, radius, K, S, n, num_peaks);

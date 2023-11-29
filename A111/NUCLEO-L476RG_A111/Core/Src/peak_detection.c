@@ -12,6 +12,7 @@
 
 
 
+
 struct Tuple{
 	int index;
 	uint16_t value;
@@ -47,6 +48,10 @@ int* mutliple_peak_detection(uint16_t *data, uint16_t data_length){
 		}
 	}
 	int* peakIndexes = (int*)malloc(2 * sizeof(int));
+	if (peaks[1].value <= 0.5*peaks[0].value){
+		peaks[1].index = 0;
+
+	}
 
 	peakIndexes[0] = peaks[0].index;
 	peakIndexes[1] = peaks[1].index;
